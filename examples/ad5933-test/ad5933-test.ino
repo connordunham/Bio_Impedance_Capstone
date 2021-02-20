@@ -45,12 +45,14 @@ void setup(void)
 void loop(void)
 {
   // Easy to use method for frequency sweep
+  Serial.print("Easy freq sweep");
   frequencySweepEasy();
 
   // Delay
   delay(5000);
 
   // Complex but more robust method for frequency sweep
+  Serial.print("Robust freq sweep");
   frequencySweepRaw();
 
   // Delay

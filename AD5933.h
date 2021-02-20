@@ -6,7 +6,8 @@
  */
 #include <Arduino.h>
 #include <Wire.h>
-
+#include "libraries/Wire/Wire.h"
+#include "libraries/ArduinoOTA/"
 /**
  * AD5933 Register Map
  *  Datasheet p23
