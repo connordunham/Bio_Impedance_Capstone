@@ -5,7 +5,13 @@
  * Includes
  */
 //#include <Arduino.h>
-//#include <Wire.h>
+#include <wire.h>
+#include <windows.h>
+#include <unistd.h>				//Needed for I2C port
+#include <fcntl.h>				//Needed for I2C port
+#include <sys/ioctl.h>			//Needed for I2C port
+#include <linux/i2c-dev.h>		//Needed for I2C port
+#include <stdio.h>
 //#include "libraries/Wire/Wire.h"
 //#include "libraries/ArduinoOTA/"
 /**
