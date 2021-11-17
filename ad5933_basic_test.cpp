@@ -1,60 +1,51 @@
 
-// Author: Connor Dunham
-// Date: November 17, 2021
-// Purpose of this code is to execute a basic CPP program that can acheive the following:
-//    1. Access I2C pins on rasberry pi
-//    2. Read and write to AD5933
-//    3. Perform measurements with AD5933
+#include <unistd.h>				//Needed for I2C port
+#include <fcntl.h>				//Needed for I2C port
+#include <sys/ioctl.h>			//Needed for I2C port
+#include <linux/i2c-dev.h>		//Needed for I2C port
 
+int file_i2c;
+int length;
+unsigned char buffer[60] = {0};
 
-//#include <Wire.h>
-#include "AD5933.h"
-
-#include <iostream>
-#include <errno.h>
-#include <wiringPiSPI.h>
-#include <unistd.h>
-
-using namespace std;
-
-#define START_FREQ  (80000)
-#define FREQ_INCR   (1000)
-#define NUM_INCR    (40)
-#define REF_RESIST  (10000)
-
-
-// channel is the wiringPi name for the chip select (or chip enable) pin.
-// Set this to 0 or 1, depending on how it's connected.
-static const int CHANNEL = 1;
-static const double gain[NUM_INCR+1];
-static const int phase[NUM_INCR+1];
-
-
-void main
+	
+//----- OPEN THE I2C BUS -----
+char *filename = (char*)"/dev/i2c-1";
+if ((file_i2c = open(filename, O_RDWR)) < 0)
 {
+	//ERROR HANDLING: you can check errno to see what went wrong
+	printf("Failed to open the i2c bus");
+	return;
+}
+	
+int addr = 0x5a;          //<<<<<The I2C address of the slave
+if (ioctl(file_i2c, I2C_SLAVE, addr) < 0)
+{
+	printf("Failed to acquire bus access and/or talk to slave.\n");
+	//ERROR HANDLING; you can check errno to see what went wrong
+	return;
+}
+	
+	
+//----- READ BYTES -----
+length = 4;			//<<< Number of bytes to read
+if (read(file_i2c, buffer, length) != length)		//read() returns the number of bytes actually read, if it doesn't match then an error occurred (e.g. no response from the device)
+{
+	//ERROR HANDLING: i2c transaction failed
+	printf("Failed to read from the i2c bus.\n");
+}
+else
+{
+	printf("Data read: %s\n", buffer);
+}
 
-    // ------------------ SETUP ------------------------
-    
-    int fd, result;
-    cout << "Initializing" << endl ;
-    
-    
-    // Configure the interface.
-    // CHANNEL insicates chip select,
-    // 500000 indicates bus speed.
-    fd = wiringPiSPISetup(CHANNEL, 500000);
-    cout << "Init result: " << fd << endl;
-
-    int fd, result;
-     
-    cout << "Initializing" << endl ;
-    // Configure the interface.
-    // CHANNEL insicates chip select,
-    // 500000 indicates bus speed.
-    fd = wiringPiSPISetup(CHANNEL, 500000);
-    cout << "Init result: " << fd << endl;
-    
-    
-    // ------------------ MAIN ---------------------
-    
+	
+//----- WRITE BYTES -----
+buffer[0] = 0x01;
+buffer[1] = 0x02;
+length = 2;			//<<< Number of bytes to write
+if (write(file_i2c, buffer, length) != length)		//write() returns the number of bytes actually written, if it doesn't match then an error occurred (e.g. no response from the device)
+{
+	/* ERROR HANDLING: i2c transaction failed */
+	printf("Failed to write to the i2c bus.\n");
 }
