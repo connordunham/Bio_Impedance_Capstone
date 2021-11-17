@@ -1,5 +1,5 @@
 #include "AD5933.h"
-#include <Math.h>
+#include <math.h>
 
 #include <unistd.h>				//Needed for I2C port
 #include <fcntl.h>				//Needed for I2C port
