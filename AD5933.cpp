@@ -9,7 +9,7 @@
  */
 
 #include "AD5933.h"
-#include <Math.h>
+#include <math.h>
 
 /**
  * Request to read a byte from the AD5933.
