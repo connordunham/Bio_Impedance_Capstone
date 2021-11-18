@@ -187,61 +187,7 @@ if __name__ == "__main__":
     x1 = ad5933.read_register(TEMP_DATA_1)
     x2 = ad5933.read_register(TEMP_DATA_1)
     print("Temperature data:")
-    print("X1: %x|X2: %x" %x1 %x2)
+    print("X1: %x | X2: %x", x1, x2)
     time.sleep(0.5)
     print("done")
-    """
-    {
-    public:
-        # Reset the board
-        static bool reset(void);
 
-        # Temperature measuring
-        static bool enableTemperature(byte);
-        static double getTemperature(void);
-
-        # Clock
-        static bool setClockSource(byte);
-        static bool setInternalClock(bool);
-        //bool setSettlingCycles(int); // not implemented - not used yet
-
-        # Frequency sweep configuration
-        static bool setStartFrequency(unsigned long);
-        static bool setIncrementFrequency(unsigned long);
-        static bool setNumberIncrements(unsigned int);
-
-        # Gain configuration
-        static bool setPGAGain(byte);
-
-        # Excitation range configuration
-        //bool setRange(byte, int); // not implemented - not used yet
-
-        # Read registers
-        static byte readRegister(byte);
-        static byte readStatusRegister(void);
-        static int readControlRegister(void);
-
-        # Impedance data
-        static bool getComplexData(int*, int*);
-
-        # Set control mode register (CTRL_REG1)
-        static bool setControlMode(byte);
-
-        # Power mode
-        static bool setPowerMode(byte);
-
-        # Perform frequency sweeps
-        static bool frequencySweep(int real[], int imag[], int);
-        static bool calibrate(double gain[], int phase[], int ref, int n);
-        static bool calibrate(double gain[], int phase[], int real[],
-                              int imag[], int ref, int n);
-    private:
-        # Private data
-        static const unsigned long clockSpeed = 16776000;
-
-        # Sending/Receiving byte method, for easy re-use
-        static int getByte(byte, byte*);
-        static bool sendByte(byte, byte);
-};
-    
-    """
