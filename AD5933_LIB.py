@@ -195,19 +195,19 @@ if __name__ == "__main__":
     print(reg, ":",x1)
     time.sleep(0.5)
     # --------------------------------------
-    reg = str(TEMP_DATA_1)
+    reg = hex(CTRL_REG1)
     x1 = ad5933.read_register(CTRL_REG1)
     print("Temperature data:")
     print(reg, ":", x1)
     time.sleep(0.5)
     # --------------------------------------
-    reg = str(TEMP_DATA_1)
+    reg = str(START_FREQ_1)
     x1 = ad5933.read_register(START_FREQ_1)
     print("Temperature data:")
     print(reg, ":", x1)
     time.sleep(0.5)
     # --------------------------------------
-    reg = str(TEMP_DATA_1)
+    reg = str(NUM_INC_1)
     x1 = ad5933.read_register(NUM_INC_1)
     print("Temperature data:")
     print(reg, ":", x1)
