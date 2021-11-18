@@ -111,25 +111,12 @@ class AD5933:
         bus = smbus.SMBus(self.i2c_channel)
 
         try:
-            return bus.read_word_data(self.address, register)
+            val = bus.read_i2c_block_data(self.address, TEMP_DATA_1, 2)
+            temp_c = (val[0] << 4) | (val[1] >> 4)
+            return temp_c
+          
         except IOError:
             print("AD5933 Read Error. Add: %s Reg: %s", str(self.address), str(register))
-        bus.close()
-
-    def read_register2(self, register):
-        """
-        Access i2c addres and extract register data
-        :return: ???
-        """
-        bus = smbus.SMBus(self.i2c_channel)
-
-        try:
-            temp_data = bus.read_byte_data(self.address, register)
-            print("Successful read:  Addr:", self.address, " Reg:", str(register))
-            return temp_data
-           
-        except IOError:
-            print("AD5933 Read Error:  Addr:", self.address, " Reg:", str(register))
         bus.close()
         
     # Temperature measuring
