@@ -188,8 +188,29 @@ if __name__ == "__main__":
     ad5933 = AD5933(AD5933_ADDR, 1)
     x1 = ad5933.read_register(TEMP_DATA_1)
     #x2 = ad5933.read_register(TEMP_DATA_2)
-    
+    #--------------------------------------
+    reg = str(TEMP_DATA_1)
+    x1 = ad5933.read_register(TEMP_DATA_1)
     print("Temperature data:")
-    print("X1:",x1)
+    print(reg, ":",x1)
     time.sleep(0.5)
+    # --------------------------------------
+    reg = str(TEMP_DATA_1)
+    x1 = ad5933.read_register(CTRL_REG1)
+    print("Temperature data:")
+    print(reg, ":", x1)
+    time.sleep(0.5)
+    # --------------------------------------
+    reg = str(TEMP_DATA_1)
+    x1 = ad5933.read_register(START_FREQ_1)
+    print("Temperature data:")
+    print(reg, ":", x1)
+    time.sleep(0.5)
+    # --------------------------------------
+    reg = str(TEMP_DATA_1)
+    x1 = ad5933.read_register(NUM_INC_1)
+    print("Temperature data:")
+    print(reg, ":", x1)
+    time.sleep(0.5)
+
     print("done")
