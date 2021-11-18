@@ -1,9 +1,11 @@
 #include "libraries/Wire/Wire.h"
 #include "libraries/ArduinoOTA/"
+import smbus
+import time
+
 
 # AD5933 Register Map
 #Datasheet p23
-
 #Device address and address pointer
 AD5933_ADDR=0x0D
 ADDR_PTR=0xB0
@@ -91,75 +93,93 @@ SWEEP_DELAY = 1
  #Contains mainly functions for interfacing with the AD5933.
 
 class AD5933:
-    def __init__(self, ADDR):
+    def __init__(self, ADDR, I2C_CHN):
         self.address = ADDR
-
-        # Reset the board
-        def reset(void):
-            pass
-
-        # Temperature measuring
-        def enableTemperature():
-            pass
-        def getTemperature():
-            pass
-        # Clock
-        def setClockSource(byte):
-            pass
-        def setInternalClock(bool):
-            pass
-        def setSettlingCycles(int):
-            pass
-        # Frequency sweep configuration
-        def setStartFrequency(freq):
-            pass
-        def setIncrementFrequency(inc):
-            pass
-        def setNumberIncrements(num):
-            pass
-        # Gain configuration
-        def setPGAGain():
-            pass
-        # Excitation range configuration
-        def setRange(range):
-            pass
-
-        # Read registers
-        def readRegister():
-            pass
-
-        def readStatusRegister():
-            pass
-        def readControlRegister():
-            pass
-        # Impedance data
-        def getComplexData(thing1m, thing2):
-            pass
-        # Set control mode register (CTRL_REG1)
-        def setControlMode():
-            pass
-        # Power mode
-        def setPowerMode():
-            pass
-        # Perform frequency sweeps
-        def frequencySweep(real, imag):
-            pass
-        def calibrate(gain, phase, ref, n):
-            pass
-
-        def calibrate(gain, phase, real, imag, ref, n):
-            pass
-
+        self.i2c_channel = I2C_CHN
 
         # Private data
-        self.clockSpeed = 16776000
-        # Sending/Receiving byte method, for easy re-use
-        def getByte():
-            #not sure if needed
-            pass
-        def sendByte():
-            # not sure if needed
-            pass
+        self._clockSpeed = 16776000
+
+    # Reset the board
+    def reset(void):
+        pass
+    def read_register(self, register):
+        """
+        Access i2c addres and extract register data
+        :return: ???
+        """
+        bus = smbus.SMBus(self.i2c_channel)
+        try:
+            return bus.read_byte_data(self.address, register)
+        except IOError:
+            print("AD5933 Read Error. Add: %s Reg: %s", str(self.address), str(register))
+
+
+    # Temperature measuring
+    def enableTemperature(self):
+        pass
+    def getTemperature(self):
+        pass
+    # Clock
+    def setClockSource(self, byte):
+        pass
+    def setInternalClock(self, bool):
+        pass
+    def setSettlingCycles(self, int):
+        pass
+    # Frequency sweep configuration
+    def setStartFrequency(self, freq):
+        pass
+    def setIncrementFrequency(self, inc):
+        pass
+    def setNumberIncrements(self, num):
+        pass
+    # Gain configuration
+    def setPGAGain(self):
+        pass
+    # Excitation range configuration
+    def setRange(self, range):
+        pass
+
+    # Read registers
+    def readRegister(self):
+        pass
+
+    def readStatusRegister(self):
+        pass
+    def readControlRegister(self):
+        pass
+    # Impedance data
+    def getComplexData(self, thing1m, thing2):
+        pass
+    # Set control mode register (CTRL_REG1)
+    def setControlMode(self):
+        pass
+    # Power mode
+    def setPowerMode(self):
+        pass
+    # Perform frequency sweeps
+    def frequencySweep(self, real, imag):
+        pass
+    def calibrate(self, gain, phase, ref, n):
+        pass
+
+    def calibrate(self, gain, phase, real, imag, ref, n):
+        pass
+
+
+    # Sending/Receiving byte method, for easy re-use
+    def getByte():
+        #not sure if needed
+        pass
+    def sendByte():
+        # not sure if needed
+        pass
+
+    # Misc useful functions
+    def print_read(self, register):
+        self.read_register(register)
+
 
 
     """
