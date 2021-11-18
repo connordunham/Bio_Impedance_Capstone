@@ -187,7 +187,9 @@ if __name__ == "__main__":
     x1 = ad5933.read_register(TEMP_DATA_1)
     x2 = ad5933.read_register(TEMP_DATA_1)
     print("Temperature data:")
-    print("X1: %s|X2: %s", str(x1), str(x2))
+    print("X1: %x|X2: %x" %x1 %x2)
+    time.sleep(0.5)
+    print("done")
     """
     {
     public:
