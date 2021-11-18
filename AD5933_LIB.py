@@ -201,8 +201,7 @@ if __name__ == "__main__":
     ad5933 = AD5933(AD5933_ADDR, 1)
     x1 = ad5933.read_register(TEMP_DATA_1)
     #x2 = ad5933.read_register(TEMP_DATA_2)
-
-    print("Successful read:  Addr:", self.address, " Reg:", str(register))
+    
     print("Temperature data:")
     print("X1:",x1)
     time.sleep(0.5)
