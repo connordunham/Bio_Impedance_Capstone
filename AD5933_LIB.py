@@ -111,13 +111,14 @@ class AD5933:
         bus = smbus.SMBus(self.i2c_channel)
 
         try:
-            return bus.read_byte_data(self.address, register)
+            val = bus.read_i2c_block_data(self.address, TEMP_DATA_1, 2)
+            temp_c = (val[0] << 4) | (val[1] >> 4)
+            return temp_c
+          
         except IOError:
             print("AD5933 Read Error. Add: %s Reg: %s", str(self.address), str(register))
-
         bus.close()
-
-
+        
     # Temperature measuring
     def enableTemperature(self):
         pass
@@ -172,10 +173,10 @@ class AD5933:
 
 
     # Sending/Receiving byte method, for easy re-use
-    def getByte(self):
+    def getByte():
         #not sure if needed
         pass
-    def sendByte(self):
+    def sendByte():
         # not sure if needed
         pass
 
@@ -183,67 +184,12 @@ class AD5933:
     def print_read(self, register):
         self.read_register(register)
 
-
 if __name__ == "__main__":
     ad5933 = AD5933(AD5933_ADDR, 1)
     x1 = ad5933.read_register(TEMP_DATA_1)
-    x2 = ad5933.read_register(TEMP_DATA_1)
-
-    print("Temperature data is")
-    print("X1: %s | X2: %s", str(x1), str(x2))
-
-    """
-    {
-    public:
-        # Reset the board
-        static bool reset(void);
-
-        # Temperature measuring
-        static bool enableTemperature(byte);
-        static double getTemperature(void);
-
-        # Clock
-        static bool setClockSource(byte);
-        static bool setInternalClock(bool);
-        //bool setSettlingCycles(int); // not implemented - not used yet
-
-        # Frequency sweep configuration
-        static bool setStartFrequency(unsigned long);
-        static bool setIncrementFrequency(unsigned long);
-        static bool setNumberIncrements(unsigned int);
-
-        # Gain configuration
-        static bool setPGAGain(byte);
-
-        # Excitation range configuration
-        //bool setRange(byte, int); // not implemented - not used yet
-
-        # Read registers
-        static byte readRegister(byte);
-        static byte readStatusRegister(void);
-        static int readControlRegister(void);
-
-        # Impedance data
-        static bool getComplexData(int*, int*);
-
-        # Set control mode register (CTRL_REG1)
-        static bool setControlMode(byte);
-
-        # Power mode
-        static bool setPowerMode(byte);
-
-        # Perform frequency sweeps
-        static bool frequencySweep(int real[], int imag[], int);
-        static bool calibrate(double gain[], int phase[], int ref, int n);
-        static bool calibrate(double gain[], int phase[], int real[],
-                              int imag[], int ref, int n);
-    private:
-        # Private data
-        static const unsigned long clockSpeed = 16776000;
-
-        # Sending/Receiving byte method, for easy re-use
-        static int getByte(byte, byte*);
-        static bool sendByte(byte, byte);
-};
+    #x2 = ad5933.read_register(TEMP_DATA_2)
     
-    """
+    print("Temperature data:")
+    print("X1:",x1)
+    time.sleep(0.5)
+    print("done")
