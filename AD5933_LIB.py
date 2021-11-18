@@ -111,7 +111,7 @@ class AD5933:
         bus = smbus.SMBus(self.i2c_channel)
 
         try:
-            return bus.read_byte_data(self.address, register)
+            return bus.read_word_data(self.address, register)
         except IOError:
             print("AD5933 Read Error. Add: %s Reg: %s", str(self.address), str(register))
         bus.close()
@@ -125,11 +125,11 @@ class AD5933:
 
         try:
             temp_data = bus.read_byte_data(self.address, register)
-            print("Successful read:  Addr: %s Reg: %s", str(self.address), str(register))
+            print("Successful read:  Addr:", self.address, " Reg:", str(register))
             return temp_data
            
         except IOError:
-            print("AD5933 Read Error. Addr: %s Reg: %s", str(self.address), str(register))
+            print("AD5933 Read Error:  Addr:", self.address, " Reg:", str(register))
         bus.close()
         
     # Temperature measuring
@@ -200,17 +200,10 @@ class AD5933:
 if __name__ == "__main__":
     ad5933 = AD5933(AD5933_ADDR, 1)
     x1 = ad5933.read_register(TEMP_DATA_1)
-    x2 = ad5933.read_register(TEMP_DATA_2)
-    
-    x1_2 = ad5933.read_register2(TEMP_DATA_1)
-    x2_2 = ad5933.read_register2(TEMP_DATA_2)
-    
+    #x2 = ad5933.read_register(TEMP_DATA_2)
+
+    print("Successful read:  Addr:", self.address, " Reg:", str(register))
     print("Temperature data:")
-    print("X1: %d | X2: %d", x1, x2)
-    time.sleep(0.5)
-    print("done")
-    
-    print("Temperature data:")
-    print("X1: %d | X2: %d", x1_2, x2_2)
+    print("X1:",x1)
     time.sleep(0.5)
     print("done")
