@@ -180,7 +180,9 @@ class AD5933:
     def print_read(self, register):
         self.read_register(register)
 
-
+if __name__ == "__main__":
+    ad5933 = AD5933(AD5933_ADDR, 1)
+    ad5933.print_read(CTRL_TEMP_MEASURE)
 
     """
     {
