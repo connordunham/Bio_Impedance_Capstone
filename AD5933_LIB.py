@@ -109,10 +109,12 @@ class AD5933:
         :return: ???
         """
         bus = smbus.SMBus(self.i2c_channel)
+
         try:
             return bus.read_byte_data(self.address, register)
         except IOError:
             print("AD5933 Read Error. Add: %s Reg: %s", str(self.address), str(register))
+        bus.close()
 
 
     # Temperature measuring
@@ -182,8 +184,10 @@ class AD5933:
 
 if __name__ == "__main__":
     ad5933 = AD5933(AD5933_ADDR, 1)
-    ad5933.print_read(CTRL_TEMP_MEASURE)
-
+    x1 = ad5933.read_register(TEMP_DATA_1)
+    x2 = ad5933.read_register(TEMP_DATA_1)
+    print("Temperature data:")
+    print("X1: %s|X2: %s", str(x1), str(x2))
     """
     {
     public:
