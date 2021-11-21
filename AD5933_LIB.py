@@ -168,7 +168,7 @@ class AD5933:
         self.enableTemperature()
         # Read bits D0 - D7 of temperature reg at TEMP_DATA_1 register
         temp1 = self.getByte(TEMP_DATA_1)
-        Shift
+        # Shift
         temp1 = temp1 << 8
         # Read bits D8 - D15 of temperature reg at TEMP_DATA_2 register
         temp2 = self.getByte(TEMP_DATA_2)
@@ -180,6 +180,11 @@ class AD5933:
         else:
             deg = temp/32
 
+        status = self.readStatusRegister()
+        if (self.readStatusRegister() & 0x1):
+            print("Valid Temp Reading")
+        else:
+            print("Invalid Temp Reading")
 
         print("temp1:", temp1)
         print("temp2:", temp2)
