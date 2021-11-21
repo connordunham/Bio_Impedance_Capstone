@@ -264,8 +264,8 @@ class AD5933:
     def verify_write(self, register, value):
         byte = self.getByte(register)
         compare = value & byte
-        print("num:", compare)
-        print("num:", bin(compare))
+        print("write desired:", bin(value))
+        print("current reg val:", bin(byte))
 
     # Misc useful functions
     def print_read(self, register):
@@ -274,7 +274,11 @@ class AD5933:
 if __name__ == "__main__":
 
     ad5933 = AD5933(AD5933_ADDR, 1)
+    print("INTIAL CNTL REG:", bin(ad5933.readControlRegister()))
+    ad5933.sendByte(CTRL_REG2, 0xff)
+    print("Changed CNTL REG:", bin(ad5933.readControlRegister()))
     if(ad5933.reset()):
+        print("after reset CNTL REG:", bin(ad5933.readControlRegister()))
         ad5933.getTemperature()
     else:print("reset fail")
 
