@@ -204,7 +204,7 @@ if __name__ == "__main__":
         ad5933.sendByte(CTRL_REG2, CTRL_TEMP_MEASURE)
 
         print("\n\nTEMP WRITE")
-        x = str(ad5933.getByte(CTRL_REG2)) + str(ad5933.getByte(CTRL_REG1))
+        x = str(bin(ad5933.getByte(CTRL_REG2))) + str(bin(ad5933.getByte(CTRL_REG1)))
         print(x)
 
 
@@ -212,7 +212,7 @@ if __name__ == "__main__":
         print("\n\nSNTBY WRITE")
         ad5933.sendByte(CTRL_REG2, CTRL_STANDBY_MODE)
 
-        x = str(ad5933.getByte(CTRL_REG2)) + str(ad5933.getByte(CTRL_REG1))
+        x = str(bin(ad5933.getByte(CTRL_REG2))) + str(bin(ad5933.getByte(CTRL_REG1)))
         print(x)
         time.sleep(5)
 
