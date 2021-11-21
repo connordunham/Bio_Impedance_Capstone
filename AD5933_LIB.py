@@ -96,7 +96,7 @@ class AD5933:
     def __init__(self, ADDR, I2C_CHN):
         self.address = ADDR
         self.i2c_channel = I2C_CHN
-        self.debug = False
+        self.debug = True
 
         # Private data
         self._clockSpeed = 16776000
@@ -165,11 +165,21 @@ DIGITAL OUTPUT–40°C–0.03125°C–30°C11,1111,1111,111111,1100, 0100, 00001
         :return:
         """
         self.enableTemperature()
+
         temp1 = hex(self.getByte(TEMP_DATA_1))
+        temp1 = temp1 << 4
         temp2 = hex(self.getByte(TEMP_DATA_2))
+        temp = temp1 & temp2
+        if int(temp > 1000):
+            deg = (temp - 16384)/32
+        else:
+            deg = temp/32
+
 
         print("temp1:", temp1)
         print("temp2:", temp2)
+        print("temp:", temp)
+        print("deg:", deg)
     # Clock
     def setClockSource(self, byte):
         pass
