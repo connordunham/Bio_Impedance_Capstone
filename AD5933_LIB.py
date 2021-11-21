@@ -274,11 +274,9 @@ class AD5933:
 if __name__ == "__main__":
 
     ad5933 = AD5933(AD5933_ADDR, 1)
-    print("INTIAL CNTL REG:", bin(ad5933.readControlRegister()))
-    ad5933.sendByte(CTRL_REG2, 0xff)
-    print("Changed CNTL REG:", bin(ad5933.readControlRegister()))
+    ad5933.sendByte(0x00, 0xff)
+
     if(ad5933.reset()):
-        print("after reset CNTL REG:", bin(ad5933.readControlRegister()))
         ad5933.getTemperature()
     else:print("reset fail")
 
