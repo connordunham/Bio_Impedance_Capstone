@@ -166,9 +166,9 @@ DIGITAL OUTPUT–40°C–0.03125°C–30°C11,1111,1111,111111,1100, 0100, 00001
         """
         self.enableTemperature()
 
-        temp1 = hex(self.getByte(TEMP_DATA_1))
+        temp1 = bin(self.getByte(TEMP_DATA_1))
         temp1 = temp1 << 4
-        temp2 = hex(self.getByte(TEMP_DATA_2))
+        temp2 = bin(self.getByte(TEMP_DATA_2))
         temp = temp1 & temp2
         if int(temp > 1000):
             deg = (temp - 16384)/32
