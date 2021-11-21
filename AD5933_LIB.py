@@ -225,7 +225,7 @@ DIGITAL OUTPUT–40°C–0.03125°C–30°C11,1111,1111,111111,1100, 0100, 00001
 if __name__ == "__main__":
 
     ad5933 = AD5933(AD5933_ADDR, 1)
-    ad5933.enableTemperature()
+    ad5933.getTemperature()
     """
     Stable Register access functions
     
