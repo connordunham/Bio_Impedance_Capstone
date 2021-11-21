@@ -102,8 +102,17 @@ class AD5933:
         self._clockSpeed = 16776000
 
     # Reset the board
-    def reset(void):
-        pass
+    def reset(self):
+        # Get the current valkue of the control register
+        val = self.getByte(CTRL_REG2)
+
+        if not val:
+            return False
+        # Set bit D4 for restart
+        val = val | CTRL_RESET
+
+        #Send byte back
+        return self.sendByte(CTRL_REG2, val)
 
     def getByte(self, register):
         """
@@ -149,10 +158,16 @@ class AD5933:
 
     # Temperature measuring
     def enableTemperature(self):
-        if(ad5933.sendByte(CTRL_REG2, CTRL_TEMP_MEASURE)):
+        # Retrieve current control reg values
+        #read_control_reg = self.readControlRegister()
+        #write_control_reg = read_control_reg & CTRL_TEMP_MEASURE
+
+        if(self.sendByte(CTRL_REG2, CTRL_TEMP_MEASURE)):
+            self.verify_write(CTRL_REG2, CTRL_TEMP_MEASURE)
             print("Temperature Enabled")
         else:print("Temperature Failed")
 
+        #elf.sendByte(CTRL_REG2, CTRL_NO_OPERATION)
 
     def getTemperature(self):
         """
@@ -184,7 +199,10 @@ class AD5933:
         if (self.readStatusRegister() & 0x1):
             print("Valid Temp Reading")
         else:
-            print("Invalid Temp Reading")
+            print("Invalid Temp Reading:", bin(status))
+
+        # Return device to no-operations
+        self.sendByte(CTRL_REG2, CTRL_NO_OPERATION)
 
         print("temp1:", temp1)
         print("temp2:", temp2)
@@ -243,6 +261,11 @@ class AD5933:
     def calibrate(self, gain, phase, real, imag, ref, n):
         pass
 
+    def verify_write(self, register, value):
+        byte = self.getByte(register)
+        compare = value & byte
+        print("num:", compare)
+        print("num:", bin(compare))
 
     # Misc useful functions
     def print_read(self, register):
@@ -251,7 +274,11 @@ class AD5933:
 if __name__ == "__main__":
 
     ad5933 = AD5933(AD5933_ADDR, 1)
-    ad5933.getTemperature()
+    if(ad5933.reset()):
+        ad5933.getTemperature()
+    else:print("reset fail")
+
+
     """
     Stable Register access functions
     
