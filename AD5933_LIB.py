@@ -245,7 +245,7 @@ class AD5933:
 if __name__ == "__main__":
 
     ad5933 = AD5933(AD5933_ADDR, 1)
-    print(ad5933.readControlRegister())
+    print(bin(ad5933.readControlRegister()))
     """
     Stable Register access functions
     
