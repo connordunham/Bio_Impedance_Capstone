@@ -157,18 +157,23 @@ class AD5933:
     def getTemperature(self):
         """
         Positive Temperature = ADC Code (D)/32
-Negative Temperature = (ADC Code (D) – 16384)/32
-where ADC Code uses all 14 bits of the data byte, including the sign bit.
-Negative Temperature = (ADC Code (D) – 8192)/32
-where ADC Code (D) is D13, the sign bit, and is removed from the ADC code.)
-DIGITAL OUTPUT–40°C–0.03125°C–30°C11,1111,1111,111111,1100, 0100, 000011, 1011, 0000, 0000TEMPERATURE (°C)75°C150°C01, 0010,1100, 000000,
+        Negative Temperature = (ADC Code (D) – 16384)/32
+        where ADC Code uses all 14 bits of the data byte, including the sign bit.
+        Negative Temperature = (ADC Code (D) – 8192)/32
+        where ADC Code (D) is D13, the sign bit, and is removed from the ADC code.)
+        DIGITAL OUTPUT–40°C–0.03125°C–30°C11,1111,1111,111111,1100, 0100, 000011, 1011, 0000, 0000TEMPERATURE (°C)75°C150°C01, 0010,1100, 000000,
         :return:
         """
+        # Set control reg byte for temp read
         self.enableTemperature()
-
+        # Read bits D0 - D7 of temperature reg at TEMP_DATA_1 register
         temp1 = self.getByte(TEMP_DATA_1)
+        Shift
         temp1 = temp1 << 8
+        # Read bits D8 - D15 of temperature reg at TEMP_DATA_2 register
         temp2 = self.getByte(TEMP_DATA_2)
+
+        # Combine both register
         temp = temp1 | temp2
         if int(temp > 1000):
             deg = (temp - 16384)/32
@@ -208,7 +213,12 @@ DIGITAL OUTPUT–40°C–0.03125°C–30°C11,1111,1111,111111,1100, 0100, 00001
     def readStatusRegister(self):
         pass
     def readControlRegister(self):
-        pass
+        byte1 = self.getByte(CTRL_REG1)
+        byte1 = byte1 << 8
+        byte2 = self.getByte(CTRL_REG2)
+        return byte1 | byte2
+
+
     # Impedance data
     def getComplexData(self, thing1m, thing2):
         pass
@@ -235,7 +245,7 @@ DIGITAL OUTPUT–40°C–0.03125°C–30°C11,1111,1111,111111,1100, 0100, 00001
 if __name__ == "__main__":
 
     ad5933 = AD5933(AD5933_ADDR, 1)
-    ad5933.getTemperature()
+    print(ad5933.readControlRegister())
     """
     Stable Register access functions
     
