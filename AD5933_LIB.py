@@ -123,7 +123,7 @@ class AD5933:
         bus = smbus.SMBus(self.i2c_channel)
 
         try:
-            bus.write_word_byte(self.address, register, byte)
+            bus.write_byte_data(self.address, register, byte)
             print("AD5933 Write Success. Add: %s Reg: %s Data: %s", str(self.address), str(register), str(byte))
 
         except IOError:
