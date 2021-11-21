@@ -240,7 +240,7 @@ class AD5933:
         byte1 = self.getByte(CTRL_REG1)
         byte1 = byte1 << 8
         byte2 = self.getByte(CTRL_REG2)
-        return byte1 | byte2
+        return byte2 | byte1
 
 
     # Impedance data
