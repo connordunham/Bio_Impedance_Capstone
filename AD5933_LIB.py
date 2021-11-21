@@ -274,7 +274,7 @@ class AD5933:
 if __name__ == "__main__":
 
     ad5933 = AD5933(AD5933_ADDR, 1)
-    ad5933.sendByte(0x00, 0xff)
+    ad5933.sendByte(0x80, 0xff)
 
     if(ad5933.reset()):
         ad5933.getTemperature()
