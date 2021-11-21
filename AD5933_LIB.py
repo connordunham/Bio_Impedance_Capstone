@@ -211,7 +211,8 @@ class AD5933:
         pass
 
     def readStatusRegister(self):
-        pass
+        return self.getByte(STATUS_REG)
+
     def readControlRegister(self):
         byte1 = self.getByte(CTRL_REG1)
         byte1 = byte1 << 8
@@ -246,6 +247,7 @@ if __name__ == "__main__":
 
     ad5933 = AD5933(AD5933_ADDR, 1)
     print(bin(ad5933.readControlRegister()))
+    print(bin(ad5933.readStatusRegister()))
     """
     Stable Register access functions
     
