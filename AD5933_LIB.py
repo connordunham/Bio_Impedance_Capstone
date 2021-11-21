@@ -192,14 +192,6 @@ class AD5933:
         pass
 
 
-    # Sending/Receiving byte method, for easy re-use
-    def getByte():
-        #not sure if needed
-        pass
-    def sendByte():
-        # not sure if needed
-        pass
-
     # Misc useful functions
     def print_read(self, register):
         self.getByte(register)
@@ -222,7 +214,6 @@ if __name__ == "__main__":
 
         x = str(ad5933.getByte(CTRL_REG2)) + str(ad5933.getByte(CTRL_REG1))
         print(x)
-
         time.sleep(5)
 
 
