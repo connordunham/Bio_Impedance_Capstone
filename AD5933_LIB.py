@@ -103,7 +103,8 @@ class AD5933:
     # Reset the board
     def reset(void):
         pass
-    def read_register(self, register):
+
+    def getByte(self, register):
         """
         Access i2c addres and extract register data
         :return: ???
@@ -111,31 +112,32 @@ class AD5933:
         bus = smbus.SMBus(self.i2c_channel)
 
         try:
-            val = bus.read_i2c_block_data(self.address, TEMP_DATA_1, 2)
-            temp_c = (val[0] << 4) | (val[1] >> 4)
-            return temp_c
+            val = bus.read_byte_data(self.address, register)
+            #val = bus.read_i2c_block_data(self.address, TEMP_DATA_1, 2)
+            # temp_c = (val[0] << 4) | (val[1] >> 4)
+            print("AD5933 Read Success. Addres: ", hex(self.address), " Reg: ", hex(register), "Data:", hex(val))
+            return val
           
         except IOError:
-            print("AD5933 Read Error. Add: %s Reg: %s", str(self.address), str(register))
+            print("AD5933 Read Error. Address: ", hex(self.address), " Reg: ", hex(register))
         bus.close()
 
-    def write_register_byte(self, register, byte):
+
+    def sendByte(self, register, byte):
         bus = smbus.SMBus(self.i2c_channel)
 
         try:
             bus.write_byte_data(self.address, register, byte)
-            print("AD5933 Write Success. Add: %s Reg: %s Data: %s", str(self.address), str(register), str(byte))
+            print("AD5933 Write Success. Address: ", hex(self.address), " Reg: ", hex(register), "Data:", hex(byte))
 
         except IOError:
-            print("AD5933 Write Error. Add: %s Reg: %s Data: %s", str(self.address), str(register), str(byte))
+            print("AD5933 Write Error. Address: ", hex(self.address), " Reg: ", hex(register), "Data:", hex(byte))
 
         bus.close()
 
-    def getByte(self, address, register):
+    def d(self, address, register):
         pass
 
-    def sendByte(self, register, value):
-        pass
 
     # Temperature measuring
     def enableTemperature(self, enable):
@@ -200,30 +202,26 @@ class AD5933:
 
     # Misc useful functions
     def print_read(self, register):
-        self.read_register(register)
+        self.getByte(register)
 
 if __name__ == "__main__":
 
     ad5933 = AD5933(AD5933_ADDR, 1)
 
     while True:
-        ad5933.write_register_byte(CTRL_REG2, CTRL_TEMP_MEASURE)
+        ad5933.sendByte(CTRL_REG2, CTRL_TEMP_MEASURE)
 
         print("\n\nTEMP WRITE")
-        print(ad5933.read_register(CTRL_REG2))
-        print("....CTNL REG extended...")
-        print(ad5933.read_register(CTRL_REG1))
+        x = str(ad5933.getByte(CTRL_REG2)) + str(ad5933.getByte(CTRL_REG1))
+        print(x)
 
 
 
         print("\n\nSNTBY WRITE")
-        ad5933.write_register_byte(CTRL_REG2, CTRL_STANDBY_MODE)
+        ad5933.sendByte(CTRL_REG2, CTRL_STANDBY_MODE)
 
-        print(ad5933.read_register(CTRL_REG2))
-        print("....CTNL REG extended...")
-        print(ad5933.read_register(CTRL_REG1))
-
-        print("start again")
+        x = str(ad5933.getByte(CTRL_REG2)) + str(ad5933.getByte(CTRL_REG1))
+        print(x)
 
         time.sleep(5)
 
