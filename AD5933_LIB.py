@@ -96,6 +96,7 @@ class AD5933:
     def __init__(self, ADDR, I2C_CHN):
         self.address = ADDR
         self.i2c_channel = I2C_CHN
+        self.debug = False
 
         # Private data
         self._clockSpeed = 16776000
@@ -113,13 +114,16 @@ class AD5933:
 
         try:
             val = bus.read_byte_data(self.address, register)
-            #val = bus.read_i2c_block_data(self.address, TEMP_DATA_1, 2)
-            # temp_c = (val[0] << 4) | (val[1] >> 4)
-            print("AD5933 Read Success. Addres: ", hex(self.address), " Reg: ", hex(register), "Data:", hex(val))
+
+            # Debug Data Visualization
+            if(self.debug):
+                print("AD5933 Read Success. Addres: ", hex(self.address), " Reg: ", hex(register), "Data:", hex(val))
             return val
           
         except IOError:
             print("AD5933 Read Error. Address: ", hex(self.address), " Reg: ", hex(register))
+            return False
+
         bus.close()
 
 
@@ -128,20 +132,28 @@ class AD5933:
 
         try:
             bus.write_byte_data(self.address, register, byte)
-            print("AD5933 Write Success. Address: ", hex(self.address), " Reg: ", hex(register), "Data:", hex(byte))
+
+            # Debug Data Visualization
+            if (self.debug):
+                print("AD5933 Write Success. Address: ", hex(self.address), " Reg: ", hex(register), "Data:", hex(byte))
+
+            return True
 
         except IOError:
             print("AD5933 Write Error. Address: ", hex(self.address), " Reg: ", hex(register), "Data:", hex(byte))
+            return False
 
         bus.close()
 
-    def d(self, address, register):
-        pass
 
 
     # Temperature measuring
-    def enableTemperature(self, enable):
-        pass
+    def enableTemperature(self):
+        if(ad5933.sendByte(CTRL_REG2, CTRL_TEMP_MEASURE)):
+            print("Temperature Enabled")
+        else:print("Temperature Failed")
+
+
     def getTemperature(self):
         pass
     # Clock
@@ -199,7 +211,10 @@ class AD5933:
 if __name__ == "__main__":
 
     ad5933 = AD5933(AD5933_ADDR, 1)
-
+    ad5933.enableTemperature()
+    """
+    Stable Register access functions
+    
     while True:
         ad5933.sendByte(CTRL_REG2, CTRL_TEMP_MEASURE)
 
@@ -215,5 +230,6 @@ if __name__ == "__main__":
         x = str(bin(ad5933.getByte(CTRL_REG2))) + str(bin(ad5933.getByte(CTRL_REG1)))
         print(x)
         time.sleep(5)
+    """
 
 
