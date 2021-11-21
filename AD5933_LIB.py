@@ -118,9 +118,27 @@ class AD5933:
         except IOError:
             print("AD5933 Read Error. Add: %s Reg: %s", str(self.address), str(register))
         bus.close()
-        
+
+    def write_register_byte(self, register, byte):
+        bus = smbus.SMBus(self.i2c_channel)
+
+        try:
+            bus.write_word_byte(self.address, register, byte)
+            print("AD5933 Write Success. Add: %s Reg: %s Data: %s", str(self.address), str(register), str(byte))
+
+        except IOError:
+            print("AD5933 Write Error. Add: %s Reg: %s Data: %s", str(self.address), str(register), str(byte))
+
+        bus.close()
+
+    def getByte(self, address, register):
+        pass
+
+    def sendByte(self, register, value):
+        pass
+
     # Temperature measuring
-    def enableTemperature(self):
+    def enableTemperature(self, enable):
         pass
     def getTemperature(self):
         pass
@@ -185,32 +203,28 @@ class AD5933:
         self.read_register(register)
 
 if __name__ == "__main__":
-    ad5933 = AD5933(AD5933_ADDR, 1)
-    x1 = ad5933.read_register(TEMP_DATA_1)
-    #x2 = ad5933.read_register(TEMP_DATA_2)
-    #--------------------------------------
-    reg = str(TEMP_DATA_1)
-    x1 = ad5933.read_register(TEMP_DATA_1)
-    print("Temperature data:")
-    print(reg, ":",x1)
-    time.sleep(0.5)
-    # --------------------------------------
-    reg = hex(CTRL_REG1)
-    x1 = ad5933.read_register(CTRL_REG1)
-    print("Temperature data:")
-    print(reg, ":", x1)
-    time.sleep(0.5)
-    # --------------------------------------
-    reg = str(START_FREQ_1)
-    x1 = ad5933.read_register(START_FREQ_1)
-    print("Temperature data:")
-    print(reg, ":", x1)
-    time.sleep(0.5)
-    # --------------------------------------
-    reg = str(NUM_INC_1)
-    x1 = ad5933.read_register(NUM_INC_1)
-    print("Temperature data:")
-    print(reg, ":", x1)
-    time.sleep(0.5)
 
-    print("done")
+    ad5933 = AD5933(AD5933_ADDR, 1)
+
+    while True:
+        ad5933.write_register_byte(CTRL_REG2, CTRL_TEMP_MEASURE)
+
+        print("\n\nTEMP WRITE")
+        print(ad5933.read_register(CTRL_REG2))
+        print("....CTNL REG extended...")
+        print(ad5933.read_register(CTRL_REG1))
+
+
+
+        print("\n\nSNTBY WRITE")
+        ad5933.write_register_byte(CTRL_REG2, CTRL_STANDBY_MODE)
+
+        print(ad5933.read_register(CTRL_REG2))
+        print("....CTNL REG extended...")
+        print(ad5933.read_register(CTRL_REG1))
+
+        print("start again")
+
+        time.sleep(5)
+
+
